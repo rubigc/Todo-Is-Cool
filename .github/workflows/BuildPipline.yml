@@ -1,5 +1,5 @@
-Pipline:
-  name: Build Pipline
+Pipeline:
+  name: Build Pipeline
 
 on:
   push:
