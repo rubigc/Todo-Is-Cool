@@ -1,0 +1,25 @@
+name: Build Docker Image Artifact (Manual)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t todo-is-cool:latest .
+
+      - name: Save Docker image as tar
+        run: |
+          docker save todo-is-cool:latest -o todo-is-cool.tar
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-image
+          path: todo-is-cool.tar
