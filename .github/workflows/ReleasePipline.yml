@@ -31,7 +31,7 @@ jobs:
         run: docker save todo-is-cool:latest -o todo-is-cool.tar
 
       - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: docker-image
           path: todo-is-cool.tar
