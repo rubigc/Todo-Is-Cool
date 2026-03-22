@@ -1,37 +1,21 @@
-name: Release & Deploy Docker
+name: Deploy to Render
 
 on:
   workflow_dispatch:
 
 jobs:
-  deploy-docker:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download Docker image artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: docker-image
-          path: ./artifact
-
-      - name: Load Docker image
-        run: docker load -i ./artifact/todo-is-cool.tar
-
-      - name: Tag Docker image for Docker Hub
-        run: docker tag todo-is-cool:latest dasfadenkreuzjr/todoiscool:latest
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: dasfadenkreuzjr
           password: ${{ secrets.DOCKER_HUB_PAT }}
 
-      - name: Push Docker image to Docker Hub
-        run: docker push dasfadenkreuzjr/todoiscool:latest
+      - name: Pull Docker image
+        run: docker pull dasfadenkreuzjr/todoiscool:latest
 
-      - name: Trigger Render Deploy 
-        run: |
-          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+      - name: Trigger Render Deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
